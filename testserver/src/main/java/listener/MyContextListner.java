@@ -4,13 +4,24 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+
+import mysqlDB.DBConnection;
+import services.SamplePost;
 
 public class MyContextListner implements ServletContextListener {
 	
+	private static final Logger log = Logger.getLogger(MyContextListner.class);
+	
 	public void contextDestroyed(ServletContextEvent arg0) {
-		//release DB Pool
 		
+		try {
+			DBConnection.getInstance().releasePool();
+		} catch (Exception e) {
+			log.error("", e);
+		}
+
 	}
 	
 	public void contextInitialized(ServletContextEvent event) {
